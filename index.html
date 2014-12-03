@@ -1,6 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html ng-app = "app" ng-controller="AppCtrl">
 <head>
+
+	<script type="text/javascript" src="basicincome_co/angular.js"></script>
+	<script type="text/javascript" src="basicincome_co/angular-mongolab.js"></script>
+		<script type="text/javascript" src="basicincome_co/ng-app.js"></script>
+				<script type="text/javascript" src="basicincome_co/mongo_controller.js"></script>
+
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link href='fonts/opensans.css' rel='stylesheet' type='text/css'>
 	<link href="mainstylesheet.css" type="text/css" rel="stylesheet" />
@@ -8,26 +14,31 @@
 	<script type="text/javascript" src="d3.v3.min.js"></script>
 	<script type="text/javascript" src="sha1.js"></script>
 	<script type="text/javascript" src="ripple-0.7.201-debug.js"></script>
+	<script type="text/javascript" src="basicincome_co/ripple-0.9.2.js"></script>
+
 	<script type="text/javascript" src="selectbox/jquery.selectbox-0.2.min.js"></script>
 	<link href="selectbox/jquery.selectbox.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript" src="jscrollpane/jquery.mousewheel.js"></script>
 	<script type="text/javascript" src="jscrollpane/jquery.jscrollpane.js"></script>
 	<script src="jquery.inview.js"></script>
 	<link type="text/css" href="jscrollpane/jquery.jscrollpane.css" rel="stylesheet" media="all" />
-	<title>Ripple Live Network</title>
+	<title>Basicincome.co Live Network</title>
+	
+	
+
 </head>
 
-<body>
-<div class="light heading darkgray">Ripple Live Network</div>
-
+<body ng-controller = "mongoCtrl">
+<div class="light heading darkgray">Basicincome.co Live Network<br>
+</div>
 <!-- BEGIN VISUALIZATION DIV -->
 <div id="visualization" style="position:relative; border: 1px solid #c8c8c8; height:703px; pointer-events:none" class="fullwidth">
-<div class="light midsize mediumgray" style="position: absolute; top: -72px;	left:35px; pointer-events:auto">
+<!-- div class="light midsize mediumgray" style="position: absolute; top: -72px;	left:35px; pointer-events:auto">
 ledger number: <span id="ledgernumber"></span><br/>
-total ripples: <span id="totalripples"></span><br/></div>
+total ripples: <span id="totalripples"></span><br/></div -->
 <!-- top bar -->
 <input id="focus" class="light midsize rounded topbar" style="left:35px; padding:0 10px; width:295px; height:42px; z-index:1" type="text"/>
-<input id="searchButton" class="topbar" style="left:360px; width:50px; height:50px; z-index:1" type="button" value="Go" onClick="changeMode('individual'); refocus($('#focus').val().replace(/\s+/g, ''),true);"/>
+<input id="searchButton" class="topbar" style="left:360px; width:50px; height:50px; z-index:1" type="button" value="Go" onClick="changeMode('individual'); name_to_address($('#focus').val().replace(/\s+/g, ''),true);"/>
 <div class="topbar" style="right:35px; height:42px; width:230px; outline:none;">
 	<select id="currency" onchange="changeCurrency(this.value);">
     <option value="XRP">All Currencies</option>
@@ -55,14 +66,17 @@ total ripples: <span id="totalripples"></span><br/></div>
 
 <!-- begin information below -->
 <div id="information" style="opacity:0.8; background-color:#fff; position:absolute; top:704px; width:100%; border: 1px solid #c8c8c8; margin-left:-1px; pointer-events:auto;">
-<div class="tab midsize mediumgray unselectedTab" style="margin-top:-36px; margin-left:140px;" onclick="changeMode('feed');" id="feedTab">Network feed</div>
-<div id="individualTab" class="tab midsize mediumgray selectedTab" style="margin-top:-35px; margin-left:-1px;" onclick="changeMode('individual',senderAddress);">Wallet info</div>
+<!-- div class="tab midsize mediumgray unselectedTab" style="margin-top:-36px; margin-left:140px;" onclick="changeMode('feed');" id="feedTab">Network feed</div>
+
+
+
+<div id="individualTab" class="tab midsize mediumgray selectedTab" style="margin-top:-35px; margin-left:-1px;" onclick="changeMode('individual',senderAddress);">Wallet info</div -->
 <div id="focalAddress" class="light mediumgray large" style="margin-bottom:13px; margin-top:13px; padding-left:20px; float:left;">&nbsp;</div>
 <div class="clearboth"></div>
 
 <div class="fullwidth topbordered horizontalrule"></div>
-<div class="light midsize mediumgray" id="leftHeading" style="width:50%; border: none; float:left; padding-left:20px;">Balances</div>
-<div class="light midsize mediumgray" id="rightHeading" style="border:none; float:left;">History</div>
+<div class="light midsize mediumgray" id="leftHeading" style="width:50%; border: none; float:left; padding-left:20px;">Dividend Pathways</div>
+<!-- div class="light midsize mediumgray" id="rightHeading" style="border:none; float:left;">History</div --!>
 <div class="clearboth"></div>
 <div class="fullwidth bottombordered horizontalrule"></div>
 
@@ -82,11 +96,11 @@ total ripples: <span id="totalripples"></span><br/></div>
 </div>
 
 <!-- the table on the right -->
-<div class="bottomlist" style="width:50%; float:right;">
+<!-- iv class="bottomlist" style="width:50%; float:right;">
   <div class="scroll-pane" style="height:288px;width:100%; ">
     <table class="outertable" id="transactionTable"></table>
   </div>
-</div>
+</div -->
 
 <div class="clearboth"></div>
 
@@ -103,7 +117,7 @@ total ripples: <span id="totalripples"></span><br/></div>
 var UNIX_RIPPLE_TIME = 946684800;
 var RECURSION_DEPTH = 1;
 var MAX_NUTL = 360;
-var REFERENCE_NODE = 'r3kmLJN5D28dHuH8vZNUZpMC43pEHpaocV';
+var REFERENCE_NODE = 'rLaKjMvLbrAJwnH4VpawQ6ot9epZqJmbfQ';
 var HALO_MARGIN = 6;
 var COLOR_TABLE = {
 //currency  |  center  |   rim  |
@@ -256,6 +270,9 @@ var remote = new Remote({
 	}]
 });
 
+//basicincome
+// Setup vaultClient
+var vaultClient = new ripple2.VaultClient();
 
 //Opening sequence:
 remote.connect(function() {
@@ -395,7 +412,24 @@ function handleLines(err, obj) {
     
     //var shouldExpand = (mode=="transaction") || obj.lines.length<MAX_NUTL || confirm('This node has '+obj.lines.length+' unseen trust lines. Expanding it may slow down your browser. Are you sure?');
     //addConnections(obj.account, obj.lines, !shouldExpand);
-    addConnections(obj.account, obj.lines);
+    
+// basicincome.co
+var $element = $('body[ng-controller="mongoCtrl"]');
+var scope = angular.element($element).scope();
+scope.getpathways(obj.account, filter_connections)
+
+
+function filter_connections(data){
+	var pathway = []
+
+ 	for(var i =0; i<data.length; i++){
+ 		pathway.push({"account": data[i].account, "balance": data[i].total_pathway, "currency": data[i].currency, "limit":"0","limit_peer":"0.25","quality_in":0,"quality_out":0})
+ 	}
+    addConnections(obj.account, pathway);
+
+}
+    scope.$apply(function(){})
+    
     //if (
 		//addConnections(obj.account, obj.lines);
 	}
@@ -507,7 +541,7 @@ function changeMode(newMode, data) {
 function enterIndividualMode(data) {
 	if (mode != "individual") {
 		$("#leftHeading").text("Balances");
-		$("#rightHeading").text("History");
+		//$("#rightHeading").text("History");
 		$("#focalAddress").css("visibility","visible");
 		$("#balanceTable").css("visibility","visible");
 		$("#transactionTable").css("visibility","visible");
@@ -792,9 +826,12 @@ function currentCurrencyBalance(accountNode) {
 }
 
 var displayingTransactionInPlace = false;
+
 function addConnections(origin, trustLines) {
+
 	var transactionMode = (mode=="transaction") || displayingTransactionInPlace;
 	$("#loading").css("display","none");
+	
 	//Receive an array of the format:
 	//[{"account":"rnziParaNb8nsU4aruQdwYE3j5jUcqjzFm","balance":"0","currency":"BTC","limit":"0","limit_peer":"0.25","quality_in":0,"quality_out":0},
 	//{"account":"rU5KBPzSyPycRVW1HdgCKjYpU6W9PKQdE8","balance":"0","currency":"BTC","limit":"0","limit_peer":"10","quality_in":0,"quality_out":0}]
@@ -1454,7 +1491,24 @@ function addNodes(degree) {
 	});
 }
 
+function name_to_address(focus, erase, noExpand){//search nodes by ripple-name
+
+//basicincome
+if(focus.length !== 34){
+	vaultClient.getAuthInfo(focus, ripple_name);
+}
+else refocus(focus, erase, noExpand)
+
+	function ripple_name(err, data){
+		if(err)console.log(err)
+		var authInfo = data
+		refocus(authInfo.address, erase, noExpand)
+	}
+}
+
 function refocus(focus, erase, noExpand) {
+	
+
 	changingFocus = true;
 	if (erase) {
 		eraseGraph();
@@ -1533,15 +1587,15 @@ function updateInformation(address) {
 	}
 
 	$('#balanceTable').text("");
-	$('#balanceTable').append(
-		'<tr class="toprow">'+
-			'<td class="circlecell"><svg width="22" height="22">'+
-				'<circle cx="11" cy="11" r="11" style="fill:'+COLOR_TABLE['XRP'][0][1]+';"></circle>'+
-			'</svg></td>'+
-			'<td class="light small mediumgray" style="width:35px;">XRP</td>'+
-			'<td class="bold amount" id="xrpBalance">'+commas(nodes[nodeMap[address]].account.Balance/1000000)+'</td>'+
-			'<td class="light expander">&nbsp;</td>'+
-		'</tr>');
+	//$('#balanceTable').append(
+		//'<tr class="toprow">'+
+			//'<td class="circlecell"><svg width="22" height="22">'+
+				//'<circle cx="11" cy="11" r="11" style="fill:'+COLOR_TABLE['XRP'][0][1]+';"></circle>'+
+			//'</svg></td>'+
+			//'<td class="light small mediumgray" style="width:35px;">XRP</td>'+
+			//'<td class="bold amount" id="xrpBalance">'+commas(nodes[nodeMap[address]].account.Balance/1000000)+'</td>'+
+			//'<td class="light expander">&nbsp;</td>'+
+		//'</tr>');
 	
 	for (var i=0; i<currencies.length; i++) {
 		var cur = currencies[i];
@@ -1575,8 +1629,8 @@ function updateInformation(address) {
 			$('#'+cur+'InnerTable').append(
 				'<tr>'+
 					'<th class="light midsize mediumgray" style="width:50%;">Address</th>'+
-					'<td class="light midsize mediumgray" style="width:16%;">Min</td>'+
-					'<td class="light midsize mediumgray center" style="width:16%">Balance</td>'+
+					//'<td class="light midsize mediumgray" style="width:16%;">Min</td>'+
+					'<td class="light midsize mediumgray center" style="width:16%">Dividend pathway</td>'+
 					'<td class="light midsize mediumgray right" style="width:16%;">Max</td>'+
 				'</tr>');
 			for (var j=0; j<trustLinesForCur.length; j++) {
@@ -1588,9 +1642,9 @@ function updateInformation(address) {
 							'onmouseout="darkenAddress(\''+tl.account+'\');"'+
 							'onclick="expandNode(\''+tl.account+'\');">'+
 							tl.account+'</span></th>'+
-						'<td class="light '+(tl.limit_peer>0 ? 'negative ' : '')+'amount"><span title="'+commas(-1*tl.limit_peer)+'">'+roundNumber(-1*tl.limit_peer)+'</span></td>'+
+						//'<td class="light '+(tl.limit_peer>0 ? 'negative ' : '')+'amount"><span title="'+commas(-1*tl.limit_peer)+'">'+roundNumber(-1*tl.limit_peer)+'</span></td>'+
 						'<td style="width:37px;" class="bold '+(tl.balance<0 ? 'negative ' : '')+'amount center"><span title="'+commas(tl.balance)+'">'+roundNumber(tl.balance)+'</span></td>'+
-						'<td style="width:37px;" class="light '+(tl.limit<0 ? 'negative ' : '')+'amount right"><span title="'+commas(tl.limit)+'">'+roundNumber(tl.limit)+'</span></td>'+
+						//'<td style="width:37px;" class="light '+(tl.limit<0 ? 'negative ' : '')+'amount right"><span title="'+commas(tl.limit)+'">'+roundNumber(tl.limit)+'</span></td>'+
 					'</tr>');
 			}		
 		}

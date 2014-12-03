@@ -1,0 +1,10 @@
+{
+  "name": "basicincome.co",
+  "description": "a ripple app",
+  "author": "",
+  "dependencies": {
+    "express": "latest",
+        "cors": "latest"
+
+  }
+}
