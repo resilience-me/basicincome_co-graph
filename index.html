@@ -40,14 +40,15 @@ total ripples: <span id="totalripples"></span><br/></div -->
 <input id="focus" class="light midsize rounded topbar" style="left:35px; padding:0 10px; width:295px; height:42px; z-index:1" type="text"/>
 <input id="searchButton" class="topbar" style="left:360px; width:50px; height:50px; z-index:1" type="button" value="Go" onClick="changeMode('individual'); name_to_address($('#focus').val().replace(/\s+/g, ''),true);"/>
 <div class="topbar" style="right:35px; height:42px; width:230px; outline:none;">
+
 	<select id="currency" onchange="changeCurrency(this.value);">
-    <option value="XRP">All Currencies</option>
+    <!-- option value="XRP">All Currencies</option>
     <option value="USD">USD - U.S. Dollars</option>
     <option value="EUR">EUR - Euro</option>
     <option value="CNY">CNY - Chinese Yuan</option>
     <option value="JPY">JPY - Japanese Yen</option>
     <option value="BTC">BTC - Bitcoins</option>
-    <option value="___">Other</option>
+    <option value="___">Other</option -->
 	</select>
 	<input type="text" id="otherCurrency" value="other" class=" sbSelector sbHolder" onfocus="focusOtherCurrency(this);" onblur="blurOtherCurrency(this);" />
 </div>
@@ -71,7 +72,8 @@ total ripples: <span id="totalripples"></span><br/></div -->
 
 
 <div id="individualTab" class="tab midsize mediumgray selectedTab" style="margin-top:-35px; margin-left:-1px;" onclick="changeMode('individual',senderAddress);">Wallet info</div -->
-<div id="focalAddress" class="light mediumgray large" style="margin-bottom:13px; margin-top:13px; padding-left:20px; float:left;">&nbsp;</div>
+<div id="rippleName" class="light darkgray large" style="margin-bottom:13px; margin-top:13px; padding-left:20px; float:left;">&nbsp;</div>
+<div id="focalAddress" class="light mediumgray midsize" style="margin-bottom:7px; margin-top:19px; padding-left:20px; float:left;">&nbsp;</div>
 <div class="clearboth"></div>
 
 <div class="fullwidth topbordered horizontalrule"></div>
@@ -96,11 +98,15 @@ total ripples: <span id="totalripples"></span><br/></div -->
 </div>
 
 <!-- the table on the right -->
-<!-- iv class="bottomlist" style="width:50%; float:right;">
-  <div class="scroll-pane" style="height:288px;width:100%; ">
-    <table class="outertable" id="transactionTable"></table>
-  </div>
-</div -->
+<div class="bottomlist" style="width:50%; float:right;">
+	  	<!-- a video-tutorial -->
+
+  <div class="video-container" style="height:288px;width:100%; ">
+  <iframe style="height:288px;width:100%;" src="//www.youtube.com/embed/Ljjtg87aj5s" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+
+
 
 <div class="clearboth"></div>
 
@@ -423,7 +429,8 @@ function filter_connections(data){
 	var pathway = []
 
  	for(var i =0; i<data.length; i++){
- 		pathway.push({"account": data[i].account, "balance": data[i].total_pathway, "currency": data[i].currency, "limit":"0","limit_peer":"0.25","quality_in":0,"quality_out":0})
+ 		pathway.push({"account": data[i].account, "balance": data[i].total_pathway, "currency": data[i].currency, "limit":"0","limit_peer":"0.25","quality_in":0,"quality_out":0, "taxRate": data[i].taxRate})
+
  	}
     addConnections(obj.account, pathway);
 
@@ -542,6 +549,7 @@ function enterIndividualMode(data) {
 	if (mode != "individual") {
 		$("#leftHeading").text("Balances");
 		//$("#rightHeading").text("History");
+		$("#rippleName").css("visibility","visible");
 		$("#focalAddress").css("visibility","visible");
 		$("#balanceTable").css("visibility","visible");
 		$("#transactionTable").css("visibility","visible");
@@ -558,6 +566,7 @@ function enterIndividualMode(data) {
 function exitIndividualMode() {
 	if (mode == "individual") {
 		$("#rightHeading").text("");
+		$("#rippleName").css("visibility","hidden");
 		$("#focalAddress").css("visibility","hidden");
 		$("#balanceTable").css("visibility","hidden");
 		$("#transactionTable").css("visibility","hidden");
@@ -1500,6 +1509,7 @@ if(focus.length !== 34){
 else refocus(focus, erase, noExpand)
 
 	function ripple_name(err, data){
+		console.log(data)
 		if(err)console.log(err)
 		var authInfo = data
 		refocus(authInfo.address, erase, noExpand)
@@ -1570,8 +1580,15 @@ function roundNumber(number) {
 
 function updateInformation(address) {
 	$('#focus').val(address);
+	
+	function update_html(err, rippleName){
+			$('#rippleName').text("~"+rippleName);
+	}
+	
 	$('#focalAddress').text(address);
 	
+	vaultClient.getRippleName(address, "https://id.ripple.com", update_html)
+
 
 
 	var currencies = [];
@@ -1631,7 +1648,9 @@ function updateInformation(address) {
 					'<th class="light midsize mediumgray" style="width:50%;">Address</th>'+
 					//'<td class="light midsize mediumgray" style="width:16%;">Min</td>'+
 					'<td class="light midsize mediumgray center" style="width:16%">Dividend pathway</td>'+
-					'<td class="light midsize mediumgray right" style="width:16%;">Max</td>'+
+					//'<td class="light midsize mediumgray right" style="width:16%;">Max</td>'+
+					'<td class="light midsize mediumgray right" style="width:16%;">TaxRate</td>'+
+
 				'</tr>');
 			for (var j=0; j<trustLinesForCur.length; j++) {
 				var tl = trustLinesForCur[j];
@@ -1645,6 +1664,8 @@ function updateInformation(address) {
 						//'<td class="light '+(tl.limit_peer>0 ? 'negative ' : '')+'amount"><span title="'+commas(-1*tl.limit_peer)+'">'+roundNumber(-1*tl.limit_peer)+'</span></td>'+
 						'<td style="width:37px;" class="bold '+(tl.balance<0 ? 'negative ' : '')+'amount center"><span title="'+commas(tl.balance)+'">'+roundNumber(tl.balance)+'</span></td>'+
 						//'<td style="width:37px;" class="light '+(tl.limit<0 ? 'negative ' : '')+'amount right"><span title="'+commas(tl.limit)+'">'+roundNumber(tl.limit)+'</span></td>'+
+						'<td style="width:37px;" class="light '+(tl.taxRate<0 ? 'negative ' : '')+'amount right"><span title="'+commas(tl.taxRate)+'">'+roundNumber(tl.taxRate)*100+"%"+'</span></td>'+
+
 					'</tr>');
 			}		
 		}
