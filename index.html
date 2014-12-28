@@ -36,6 +36,9 @@
 <!-- div class="light midsize mediumgray" style="position: absolute; top: -72px;	left:35px; pointer-events:auto">
 ledger number: <span id="ledgernumber"></span><br/>
 total ripples: <span id="totalripples"></span><br/></div -->
+<div class="light midsize mediumgray" style="position: absolute; top: -72px;	left:35px; pointer-events:auto">
+connected nodes: {{database.length}}<br/>
+</div>
 <!-- top bar -->
 <input id="focus" class="light midsize rounded topbar" style="left:35px; padding:0 10px; width:295px; height:42px; z-index:1" type="text"/>
 <input id="searchButton" class="topbar" style="left:360px; width:50px; height:50px; z-index:1" type="button" value="Go" onClick="changeMode('individual'); name_to_address($('#focus').val().replace(/\s+/g, ''),true);"/>
@@ -77,8 +80,10 @@ total ripples: <span id="totalripples"></span><br/></div -->
 <div class="clearboth"></div>
 
 <div class="fullwidth topbordered horizontalrule"></div>
-<div class="light midsize mediumgray" id="leftHeading" style="width:50%; border: none; float:left; padding-left:20px;">Dividend Pathways</div>
-<!-- div class="light midsize mediumgray" id="rightHeading" style="border:none; float:left;">History</div --!>
+<div class="light midsize mediumgray" id="leftHeading" style="width:50%; border: none; float:left; padding-left:20px;">Safety Net</div>
+<div class="light midsize mediumgray" id="rightHeading" style="width:25%; border:none; float:left;">Penalty</div>
+
+<div class="light midsize mediumgray" id="rightHeading2" style="border:none; float:left;">Unpaid tax</div>
 <div class="clearboth"></div>
 <div class="fullwidth bottombordered horizontalrule"></div>
 
@@ -97,13 +102,28 @@ total ripples: <span id="totalripples"></span><br/></div -->
   </div>
 </div>
 
-<!-- the table on the right -->
-<div class="bottomlist" style="width:50%; float:right;">
-	  	<!-- a video-tutorial -->
-
-  <div class="video-container" style="height:288px;width:100%; ">
-  <iframe style="height:288px;width:100%;" src="//www.youtube.com/embed/Ljjtg87aj5s" frameborder="0" allowfullscreen></iframe>
+<!-- the table in the middle -->
+<div class="bottomlist rightbordered" style="width:25%; float:left;">
+  <div class="scroll-pane" style="height:288px;width:100%; ">
+    <table class="outertable" id="infoTable"></table>
+  </div>
 </div>
+
+<!-- the table on the right -->
+<div class="bottomlist" style="width:25%; float:left;">
+  <div class="scroll-pane" style="height:288px;width:100%; ">
+    <table class="outertable" id="stuffTable"></table>
+  </div>
+</div>
+
+
+
+
+<!--a video-tutorial -->
+
+  <!-- div class="video-container" style="height:288px;width:100%; ">
+  <iframe style="height:288px;width:100%;" src="//www.youtube.com/embed/Ljjtg87aj5s" frameborder="0" allowfullscreen></iframe>
+</div-->
 </div>
 
 
@@ -1602,6 +1622,48 @@ function updateInformation(address) {
 	if (!trustLines) {
 		trustLines = [];
 	}
+//basicincome.co
+var $element = $('body[ng-controller="mongoCtrl"]');
+var scope = angular.element($element).scope();
+scope.get_consumption_outside_network(address, update_table)
+
+function update_table(data){
+	console.log(data[0].total_amount)
+		$('#infoTable').text("");
+
+	$('#infoTable').append(
+			'<tr style="cursor:'+(trustLinesForCur.length ? 'pointer' : 'auto')+'" sublistid="'+cur+
+					'" numberofsubrows="'+trustLinesForCur.length+'" '+'">'+
+				'<td class="circlecell"><svg width="22" height="22">'+
+					'<circle cx="11" cy="11" r="11" style="fill:'+COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'___')][0][1]+';"></circle>'+
+				'</svg></td>'+
+				'<td class="light small mediumgray">'+cur+'</td>'+
+				'<td class="bold amount">'+data[0].total_amount+'</td>'+
+			'</tr>');
+	
+}
+	
+	
+
+scope.get_tax_blob(address, update_table2)
+	
+function update_table2(data){
+	console.log(data[0].total_amount)
+		$('#stuffTable').text("");
+
+	$('#stuffTable').append(
+			'<tr style="cursor:'+(trustLinesForCur.length ? 'pointer' : 'auto')+'" sublistid="'+cur+
+					'" numberofsubrows="'+trustLinesForCur.length+'" '+'">'+
+				'<td class="circlecell"><svg width="22" height="22">'+
+					'<circle cx="11" cy="11" r="11" style="fill:'+COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'___')][0][1]+';"></circle>'+
+				'</svg></td>'+
+				'<td class="light small mediumgray">'+cur+'</td>'+
+				'<td class="bold amount">'+data[0].total_amount+'</td>'+
+			'</tr>');
+	
+}
+
+
 
 	$('#balanceTable').text("");
 	//$('#balanceTable').append(

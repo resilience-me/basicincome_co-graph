@@ -39,6 +39,19 @@ angular.module('mongolabResourceHttp', [])
         };
 
 
+
+        // added by basicincome.co dev
+        Resource.get_database = function (callback) {
+        $http.get(dbUrl+'/collections/' +"?apiKey="+defaultParams.apiKey).success(function(data){
+        var temp = []
+            for(var i=0;i<data.length;i++){
+                if(data[i].length === 34)temp.push(data[i])
+            }
+        callback(temp)
+        })
+        };
+
+
         Resource.query = function (queryJson, options) {
 
             var prepareOptions = function (options) {
