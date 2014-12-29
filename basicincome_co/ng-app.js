@@ -9,9 +9,16 @@ app.constant('MONGOLAB_CONFIG',{API_KEY:'_5sK-6UJIaR72iqjdI0lHAo7l90nA9yp', DB_N
 
 app.controller('AppCtrl', ['$scope',
     function ($scope) {
-    	$scope.test = function(){}
+        
+        
+        
+    	$scope.tes = function(){
+    	    console.log("as")
+    	}
 
 $scope.hej = "hehehe"
+
+
     }]);
     
     

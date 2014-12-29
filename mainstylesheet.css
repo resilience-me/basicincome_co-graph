@@ -42,6 +42,7 @@ body { background-color: #fff; }
 .negative  { color:#d00; }
 .darkgray  { color:#333; }
 .mediumgray { color:#666; }
+.center {text-align:center;}
 .heading{
 	font-size:36px;
 	text-align:center;
@@ -73,7 +74,6 @@ iframe { width:100%; padding:0; border:0; height:100%; }
 	opacity:0.8;
 	position:absolute; 
 	top:23px; 
-  pointer-events:auto;
 	color:#333;}
 .bottomlist { height:293px; }
 #otherCurrency {
