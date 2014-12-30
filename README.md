@@ -1,11 +1,9 @@
-# GRAPH.BASICINCOME.CO
-### THE WORLDS FIRST PEER-TO-PEER #BASICINCOME NETWORK, afore your eyes
+### Basicincome.co - The Worlds First Peer-to-Peer #BasicIncome Network
 
-An example of how you can visualize a peer-to-peer basic income network
+The entire Basicincome.co-network, visualized using d3Networks library. The graph supports two views, safety-net networks and dividend-swarm networks.
 
-inspired by https://github.com/ripple/ripple-graph
 
-## PARTS:
+## Parts:
 
 built using http://christophergandrud.github.io/d3Network/
 
@@ -15,6 +13,6 @@ Ripple API
 
 Basicincome.co API
 
-### How to Boot:
+### How to Boot (for n00bs):
 
-Deploy on Modulus.io. THat´s all you need to do :)
+Deploy on Modulus.io.
