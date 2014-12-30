@@ -60,7 +60,6 @@
 </div>
 <div class="light heading darkgray">Basicincome.co Live Network<br>
 </div>
-<p class="center">under development. converting to angularjs. will take a week.</p>
 
 <!-- BEGIN VISUALIZATION DIV -->
 <div id="visualization" style="position:relative; border: 1px solid #c8c8c8; height:703px;" class="fullwidth">
@@ -68,6 +67,11 @@
 <div class="light midsize mediumgray" style="position: absolute; top: -72px;	left:35px; ">
 connected nodes: {{database.length}}<br/>
 </div>
+
+<div class="light midsize mediumgray" style="position: absolute; top: -72px;	right:35px; ">
+<button ng-click="change_to_safety_net_pathways()">Safety-Net Pathways</button><button ng-click="change_to_dividend_pathways()">Dividend Pathways</button><br/>
+</div>
+
 <!-- top bar -->
 
 <input id="focus" class="light midsize rounded topbar" style="left:35px; padding:0 10px; width:295px; height:42px; z-index:1" type="text"  ng-model="address"/>
@@ -104,10 +108,10 @@ connected nodes: {{database.length}}<br/>
 <div class="clearboth"></div>
 
 <div class="fullwidth topbordered horizontalrule"></div>
-<div class="light midsize mediumgray" id="leftHeading" style="width:50%; border: none; float:left; padding-left:20px;">Safety Net</div>
-<div class="light midsize mediumgray" id="rightHeading" style="width:25%; border:none; float:left;">Incentive Layer: Penalty</div>
+<div class="light midsize mediumgray" id="leftHeading" style="width:50%; border: none; float:left; padding-left:20px;">{{network_type}}</div>
+<div class="light midsize mediumgray" id="rightHeading" style="width:25%; border:none; float:left;" ng-show="network_type !='Dividend Pathways'">Incentive Layer: Penalty</div>
 
-<div class="light midsize mediumgray" id="rightHeading2" style="border:none; float:left;">Tax to declare</div>
+<div class="light midsize mediumgray" id="rightHeading2" style="border:none; float:left;" ng-show="network_type !='Dividend Pathways'">Tax to declare</div>
 <div class="clearboth"></div>
 <div class="fullwidth bottombordered horizontalrule"></div>
 
@@ -162,7 +166,7 @@ connected nodes: {{database.length}}<br/>
 
   <!-- INCENTIVE LAYER: PENALTY TABLE -->
 
-<div class="bottomlist rightbordered" style="width:25%; float:left;">
+<div class="bottomlist rightbordered" style="width:25%; float:left;" ng-show="network_type != 'Dividend Pathways'">
 <div class="scroll-pane" style="height:288px;width:100%; ">
 		<table class="outertable" id="infoTable">
 		<tr>
@@ -178,7 +182,7 @@ connected nodes: {{database.length}}<br/>
 
   <!-- TAX TO DECLARE TABLE -->
 
-<div class="bottomlist" style="width:25%; float:left;">
+<div class="bottomlist" style="width:25%; float:left;" ng-show="network_type != 'Dividend Pathways'">
 <div class="scroll-pane" style="height:288px;width:100%; ">
 		<table class="outertable" id="stuffTable">
 		<tr>

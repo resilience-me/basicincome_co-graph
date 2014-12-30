@@ -6,8 +6,29 @@
     function ($scope, $network, $vaultClient, $MongoDB)
   {
   	
+$scope.network_type = "Safety Net"
 
-      
+$scope.change_views = function() { //not in use 
+$scope.switcher = !$scope.switcher
+}
+$scope.change_to_safety_net_pathways = function() {  
+$scope.switcher = false
+$scope.network_type = "Safety Net"
+$MongoDB.type1()
+console.log("viewing safety nets")
+}
+$scope.change_to_dividend_pathways = function() {  
+$scope.switcher = true
+$scope.network_type = "Dividend Pathways"
+
+$MongoDB.type2()
+
+console.log("viewing dividend pathways")
+
+}
+
+
+
     $network.shout()
     console.log("hej")
 
@@ -236,15 +257,23 @@ var requestRepetitionInterval = setInterval(function(){
 function serverGetLines(address) {
 	if ($.isEmptyObject(nodes[nodeMap[address]].trustLines)) {
 		//Get trust lines for address         ?  ??current?
+		handleLines(address)
+		/*
 		var rral = (function() {return function() {
 			var x = remote.request_account_lines(address, 0, 0, handleLines);
+
+			//THIS
 			return x.message.id;
 		}})();
+		
+		*/
+		/*
 		var reqID = rral();
 		pendingRequests[reqID] = {
 			func:rral,
 			timestamp:(new Date().getTime())
 		}
+		*/
 		
 	} else {
 		addConnections(address, nodes[nodeMap[address]].trustLines);
@@ -299,11 +328,14 @@ function getNextTransactionPage() {
 
 //Handlers
 
-function handleLines(err, obj) {
+function handleLines(address) {
+
+/*
 	delete pendingRequests[this.message.id];
 	if (err && err.remote && (err.remote.error === "actNotFound" || err.remote.error === "actMalformed") ) {
 		$("#loading").text("Account not found!").css("color","#a00");
 	} else {
+		*/
   	/*if () {
 			//serverGetLines(address);
       addConnections(obj.account, obj.lines);
@@ -313,7 +345,7 @@ function handleLines(err, obj) {
     //addConnections(obj.account, obj.lines, !shouldExpand);
     
 // basicincome.co
-$MongoDB.getpathways(obj.account, filter_connections)
+$MongoDB.getpathways(address, filter_connections)
 
 
 function filter_connections(data){
@@ -323,14 +355,15 @@ function filter_connections(data){
  		pathway.push({"account": data[i].account, "balance": data[i].total_pathway, "currency": data[i].currency, "limit":"0","limit_peer":"0.25","quality_in":0,"quality_out":0, "taxRate": data[i].taxRate})
 
  	}
-    addConnections(obj.account, pathway);
+ 	console.log("this"+address,pathway)
+    addConnections(address, pathway);
 
 }
 
     //if (
 		//addConnections(obj.account, obj.lines);
 	}
-}
+
 
 function handleTransaction(obj) {
     var tx  = obj.transaction;
@@ -395,7 +428,7 @@ function handleAccountTransactions(err, obj) {
 		n.transactionsFinished = true;
 	}
 	if (obj.account == focalNode) {
-		updateTransactions(focalNode, true); //appending=true
+		//updateTransactions(focalNode, true); //appending=true
 	}
 }
 
@@ -748,6 +781,7 @@ var displayingTransactionInPlace = false;
 
 function addConnections(origin, trustLines) {
 
+	console.log("this"+trustLines)
 	var transactionMode = (mode=="transaction") || displayingTransactionInPlace;
 	$("#loading").css("display","none");
 	
@@ -1480,6 +1514,7 @@ else refocus(focus, erase, noExpand)
 
 $scope.name_to_address = function(focus, erase, noExpand){//search nodes by ripple-name
 
+
 //basicincome
 if(focus.length !== 34){
 	vaultClient.getAuthInfo(focus, ripple_name);
@@ -1514,7 +1549,7 @@ function refocus(focus, erase, noExpand) {
 	addNodes(0);
 	reassignColors(focalNode);
 	colorRogueNodes();
-	serverGetInfo(focalNode);
+	//serverGetInfo(focalNode);
 	updateInformation(focus);
   getNextTransactionPage();
 }
@@ -1602,16 +1637,19 @@ function updateInformation(address) {
 		trustLines = [];
 	}
 	
-
-	
+update_basicincome_co_data()
+function update_basicincome_co_data(){	
 //BASICINCOME.CO
 
 $MongoDB.get_consumption_outside_network(address, update_table)
 
 function update_table(data){
 	
+if(data[0].total_amount>0){	
 $scope.penalty = data[0].total_amount	
 	
+}
+else $scope.penalty = 0
 }
 
 $scope.myStyle = {'fill' : COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'___')][0][1] }
@@ -1622,10 +1660,13 @@ console.log(COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'___')][0][1])
 $MongoDB.get_tax_blob(address, a)
 	
 function a(data){
-	
+	if(data[0].total_amount>0){	
+
 $scope.unpaid_tax = roundNumber(data[0].total_amount)	
-	
+	}
+	else $scope.unpaid_tax = 0
 }	
+}
 	
 	for (var i=0; i<currencies.length; i++) {
 		var cur = currencies[i];
@@ -1642,7 +1683,7 @@ $scope.unpaid_tax = roundNumber(data[0].total_amount)
 
 	
 	}
-	updateTransactions(address);
+	//updateTransactions(address);
 }
 
 
@@ -1683,7 +1724,7 @@ function showTransactionWithHash(hash) {
 	changeMode("transaction",transactionMap[hash]);
 }
 var transactionMap = {};
-	
+	/*
 function updateTransactions(address, appending) {
 	if (!appending) {
 		$('#transactionTable').text("");
@@ -1852,7 +1893,7 @@ function updateTransactions(address, appending) {
 
 	}
 }
-
+*/
 
 function animateInPlaceWithHash(hash) {
 	var tx = transactionMap[hash];
