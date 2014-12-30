@@ -58,18 +58,20 @@
 
 <div>
 </div>
-<div class="light heading darkgray">Basicincome.co Live Network<br>
+<div class="light heading darkgray block">Basicincome.co Live Network<br>
 </div>
 
 <!-- BEGIN VISUALIZATION DIV -->
 <div id="visualization" style="position:relative; border: 1px solid #c8c8c8; height:703px;" class="fullwidth">
 
-<div class="light midsize mediumgray" style="position: absolute; top: -72px;	left:35px; ">
+<div class="light midsize mediumgray" style="position: absolute; top: -88px;	left:35px; ">
 connected nodes: {{database.length}}<br/>
 </div>
 
-<div class="light midsize mediumgray" style="position: absolute; top: -72px;	right:35px; ">
-<button ng-click="change_to_safety_net_pathways()">Safety-Net Pathways</button><button ng-click="change_to_dividend_pathways()">Dividend Pathways</button><br/>
+<div class="light midsize mediumgray block" style="position: absolute; top: -88px;	right:35px; display:block">
+<button ng-click="change_to_safety_net_pathways();submit(address)" class="btn">Safety-Net Pathways</button>
+<br>
+<button ng-click="change_to_dividend_pathways();submit(address)" class="btn">Dividend Pathways</button><br/>
 </div>
 
 <!-- top bar -->
@@ -128,12 +130,13 @@ connected nodes: {{database.length}}<br/>
   
   
   <!-- SAFETY NET TABLE -->
-  
+  <div class="scroll-pane" style="height:288px; margin-left:10px;">
+
   				<div>
   				<table class="outertable" id="">
-  				<tr ng-click="show = !show">
+  				<tr ng-click="show = !show" class="pointer">
 					<td class="circlecell"><svg width="22" height="22">
-					<circle cx="11" cy="11" r="11" ng-style="{{myStyle}}" style="fill:'+COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'___')][0][1]+';"></circle>
+					<circle cx="11" cy="11" r="11" ng-style="{{myStyle}}"></circle>
 					</svg></td>
 					<td class="light small mediumgray" ng-click="test()">{{cur}}</td>
 					<td class="bold amount">{{commas(balances[cur])}}</td>
@@ -156,12 +159,11 @@ connected nodes: {{database.length}}<br/>
 					</table>
 					</div>
 			
-			
-  <div class="scroll-pane" style="height:288px; margin-left:10px;">
+</div>
+
 
   	<!--STUFF -->
 
-</div>
 </div>
 
   <!-- INCENTIVE LAYER: PENALTY TABLE -->

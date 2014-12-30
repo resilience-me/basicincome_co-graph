@@ -27,6 +27,14 @@ console.log("viewing dividend pathways")
 
 }
 
+$scope.submit = function(address){
+	console.log("testt"+$scope.address)
+
+	$scope.changeMode('individual')
+	$scope.name_to_address(address, true)
+	change_color()
+}
+
 
 
     $network.shout()
@@ -53,7 +61,7 @@ var COLOR_TABLE = {
           ["#fab9ac","#f9ad95"],
           ["#fddad1","#fcd4c4"]],
 			
-	"BTC": [["#e19e41","#b76f2f"],
+	"BTC": [["#f9b120","#b76f2f"],
 /*ORANGE*/["#e5af65","#c38a57"],
           ["#e9c189","#d0a57e"],
           ["#edd2ad","#dcbfa6"],
@@ -99,7 +107,19 @@ var COLOR_TABLE = {
 /*PINK*/  ["#c389ab","#9c6283"],
           ["#d0a4be","#b2879f"],
           ["#dcbfd0","#c9abbc"],
-          ["#d9dae3","#dfd0d8"]]};
+          ["#d9dae3","#dfd0d8"]],
+          
+   "DIV":  [["#f9b120","#b76f2f"],/*dividend-pathway*/
+		  ["#e5af65","#c38a57"],
+          ["#e9c189","#d0a57e"],
+          ["#edd2ad","#dcbfa6"],
+          ["#f1e4d1","#e9dacd"]],
+	"SAF": [["#55a7cc","#346aa9"],
+	      ["#83b8d6","#5083b9"], //safety net
+          ["#a7cae1","#7ba1cb"],
+          ["#d0e1ed","#a3c2dd"],
+          ["#f2f6fa","#cee8f1"]],
+};
           
 var HIGH_SATURATION_COLORS = {
 	"__N": "#f00", //RED	
@@ -110,7 +130,10 @@ var HIGH_SATURATION_COLORS = {
 	"XRP": "#0af", //BLUE
 	"___": "#00f", //INDIGO
 	"CAD": "#a0f", //VIOLET
-	"EUR": "#f0a"  //PINK
+	"EUR": "#f0a",  //PINK
+	"DIV": "#f0a",  //PINK
+	"SAF": "#0af"  //PINK
+
 };
 var HEX_TO_PERCENT = {"0":0,"a":0.67,"f":1};
 
@@ -971,11 +994,46 @@ function defineRadialGradient(name, innerColor, outerColor) {
 		.attr("stop-opacity","1");
 }
 
-for (var cur in COLOR_TABLE) {	
-	var shades = COLOR_TABLE[cur];
+for (var cur in COLOR_TABLE) {
+	var shades
+if($scope.network_type !='Dividend Pathways'){
+	console.log("s")
+	shades = COLOR_TABLE["SAF"];
+	}
+	else shades = COLOR_TABLE["DIV"];console.log("Dividendpathway"+shades)
+
 	for (var i=0; i<shades.length; i++) {
 		defineRadialGradient("gradient"+cur+i, shades[i][0], shades[i][1]);
 	}
+}
+
+function change_color(){
+for (var cur in COLOR_TABLE) {
+	var shades
+if($scope.network_type !='Dividend Pathways'){
+	console.log("s")
+	shades = COLOR_TABLE["SAF"];
+	}
+	else shades = COLOR_TABLE["DIV"];console.log("Dividendpathway"+shades)
+
+	for (var i=0; i<shades.length; i++) {
+		defineRadialGradient("gradient"+cur+i, shades[i][0], shades[i][1]);
+	}
+}
+
+
+if($scope.network_type !='Dividend Pathways'){$scope.$apply(function(){
+$scope.myStyle = {'fill' : COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'SAF')][0][1] }
+})
+console.log(COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'SAF')][0][1])
+	console.log(JSON.stringify($scope.myStyle) + "haha")
+
+}
+else {$scope.$apply(function(){
+	$scope.myStyle = {'fill' : COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'DIV')][0][1] }})
+	console.log(JSON.stringify($scope.myStyle) + "haha")
+}
+
 }
 
 function defineFilter(name, red, green, blue) {
@@ -1497,6 +1555,7 @@ function addNodes(degree) {
 }
 
 function name_to_address(focus, erase, noExpand){//search nodes by ripple-name
+console.log($scope.address)
 
 //basicincome
 if(focus.length !== 34){
@@ -1652,8 +1711,17 @@ $scope.penalty = data[0].total_amount
 else $scope.penalty = 0
 }
 
-$scope.myStyle = {'fill' : COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'___')][0][1] }
-console.log(COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'___')][0][1])
+
+if($scope.network_type !='Dividend Pathways'){
+$scope.myStyle = {'fill' : COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'SAF')][0][1] }
+console.log(COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'SAF')][0][1])
+	console.log(JSON.stringify($scope.myStyle) + "haha")
+
+}
+else {
+	$scope.myStyle = {'fill' : COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'DIV')][0][1] }
+	console.log(JSON.stringify($scope.myStyle) + "haha")
+}
 
 
 

@@ -32,6 +32,7 @@ this.type2 = function(){
 
     
 this.getpathways = function(address, callback){
+  $scope.address = address
   MongoDB.collection(address)
   console.log("thiss"+type)
  

@@ -44,10 +44,9 @@ body { background-color: #fff; }
 .mediumgray { color:#666; }
 .center {text-align:center;}
 .heading{
-	font-size:36px;
+	font-size:28px;
 	text-align:center;
 	width:100%;
-	min-width: 935px;
 	padding:30px 0;}
 .large { font-size:21px; }
 .midsize { font-size:14px;}
@@ -70,6 +69,9 @@ iframe { width:100%; padding:0; border:0; height:100%; }
 .horizontalrule { height:10px; }
 .fullwidth { width: 100%; }
 .clearboth { clear:both; }
+.block {
+	display:block;
+}
 .topbar {
 	opacity:0.8;
 	position:absolute; 
@@ -235,4 +237,65 @@ div#transactionInformation ul {
 	height:35px;
 	text-align:center;
 	line-height:35px;
+}
+
+.btn_standard {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.btn-switch-view {
+color: #e8e8e8;
+background-color: #f7931a;
+border-color: #2e5e96;
+display: block; 
+width: 100%;
+}
+
+.pointer {
+	  cursor: pointer;
+
+}
+
+.btn {
+  background-color: #e8e8e8;
+  display: inline-block;
+  padding: 6px 12px;
+  margin-right:10px;
+  margin-left:10px;
+  margin-bottom: 10px;
+  width: 100%;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
 }
