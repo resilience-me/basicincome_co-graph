@@ -149,16 +149,16 @@ var transaction_id;
 
 var changingFocus = false;
 
+var command = param.hash
+console.log("thisss"+command)
+console.log("thisss"+param.hash)
 if (param == "") {
 	focalNode = REFERENCE_NODE;
 } else if (param.charAt(0) == "r" ) {
 	focalNode = param;
 } else if ("0123456789ABCDEF".indexOf(param.charAt(0)) != -1) {
 	transaction_id = param;
-} else if (param.charAt(0) == "u" && Sha1.hash(param) == "7d0b25cc0abdcc216e9f26b078c0cb5c9032ed8c") {
-	//Easter egg!
-	RECURSION_DEPTH = 999999999;
-	focalNode = REFERENCE_NODE;
+ 
 } else {
 	focalNode = REFERENCE_NODE;
 }
@@ -1025,12 +1025,14 @@ if($scope.network_type !='Dividend Pathways'){
 if($scope.network_type !='Dividend Pathways'){$scope.$apply(function(){
 $scope.myStyle = {'fill' : COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'SAF')][0][1] }
 })
+
 console.log(COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'SAF')][0][1])
 	console.log(JSON.stringify($scope.myStyle) + "haha")
 
 }
 else {$scope.$apply(function(){
 	$scope.myStyle = {'fill' : COLOR_TABLE[(COLOR_TABLE.hasOwnProperty(cur)?cur:'DIV')][0][1] }})
+	
 	console.log(JSON.stringify($scope.myStyle) + "haha")
 }
 
@@ -1616,7 +1618,7 @@ function refocus(focus, erase, noExpand) {
 
 
 $scope.commas = function(number){
-	console.log(number)
+	console.log("thisssss " +number)
 	  var parts = number.toString().split(".");
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return parts.join(".");
@@ -1686,6 +1688,7 @@ function updateInformation(address) {
 	var currencies = [];
 	var balances = getBalances(address);
 	$scope.balances = balances
+	console.log("balances "+JSON.stringify(balances))
 	for (var cur in balances) {
 		currencies.push(cur);
 	}
